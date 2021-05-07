@@ -8,16 +8,20 @@ while sair == 0:
     comandos = 0
     
     musica = str(input('Escreva o nome da musica para reproduzir: ')).strip()
+    
+    if musica == 'sair':
+        sair =+ 1
+        comandos =+ 1
+    else:
+        mp3 = '.mp3' in musica
+        if mp3 == False:
+            musica = musica + '.mp3'
 
-    mp3 = '.mp3' in musica
-    if mp3 == False:
-        musica = musica + '.mp3'
+        mixer.music.load(musica)
+        mixer.music.play()
     
     print('')
     
-    mixer.music.load(musica)
-    mixer.music.play()
-
 
     while comandos == 0:
         comando = str(input('Comando para a musica: ')).strip()
