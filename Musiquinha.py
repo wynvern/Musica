@@ -4,17 +4,16 @@ mixer.init()
 sair = 0
 comandos = 0
 
-while sair == 0:
-    
+while sair == 0:   
     comandos = 0
     
     musica = str(input('Escreva o nome da musica para reproduzir: ')).strip()
-    mp3 = musica.find('.mp3')
 
-    print('')
-    
-    if mp3 == -1:
+    mp3 = '.mp3' in musica
+    if mp3 == False:
         musica = musica + '.mp3'
+    
+    print('')
     
     mixer.music.load(musica)
     mixer.music.play()
