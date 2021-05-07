@@ -45,7 +45,9 @@ while sair == 0:
 
         if comando == 'alistar':
             musica2 = str(input('Escreva o nome da musica para alistar: ')).strip()
-            musica2 = musica2 + '.mp3'
+            mp31 = '.mp3' in musica2
+            if mp31 == False:
+                musica2 = musica2 + '.mp3'
 
             mixer.music.queue(musica2)
                                 
