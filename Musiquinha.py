@@ -1,4 +1,5 @@
 from pygame import mixer
+from time import sleep
 mixer.init()
 
 sair = 0
@@ -22,12 +23,17 @@ while sair == 0:
     
     print('')
     
-
     while comandos == 0:
         comando = str(input('Comando para a musica: ')).strip()
         comando = comando.lower()
         
         print('')
+
+        if comando == 'info':
+            print('\033[1;35mFoi o Zeki quem fez! Versao 0.1.2')
+            print('Alguns bugs estao a solta pelo programa, eu vou corrigir eles...')
+            print('Espero que voce goste do que eu fiz >w<\033[m')
+            print('')
 
         if comando == 'pausar':
             mixer.music.pause()
@@ -54,11 +60,15 @@ while sair == 0:
                 musica2 = musica2 + '.mp3'
 
             mixer.music.queue(musica2)
-                                
-            print('A musica {} foi alistada com sucesso e tocara depois de {}'.format(musica2, musica))
+            
+            print('')                    
+            print('\033[1;32mA musica {} foi alistada com sucesso e tocara depois de {}\033[m'.format(musica2, musica))
             print('')
                                 
             if mixer.music.queue(musica2):
                 musica2 = 0
                      
-            
+
+print('\033[1;31mSaindo do programa... Tchau!\033[m')
+mixer.music.unload()
+sleep(1)
