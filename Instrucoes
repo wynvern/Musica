@@ -1,1 +1,9 @@
-Bem e so abrir o projeto e colocar a musica na mesma pasta. Nao precisa colocar ".mp3" no final porque ele coloca sozinho
+Coloque a musica na pasta do programa beta e escreva o nome dele, pode colocar mp3 ou nao, pois nao ha diferenca alguma.
+
+Comandos disponiveis:
+
+Pausar = Pausa a musica
+Retomar = Despausa a musica
+Trocar = Troca a musica
+Alistar = Musica em queue
+Recomecar = Volta a musica atual para o inicio
