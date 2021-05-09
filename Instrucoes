@@ -7,3 +7,4 @@ Retomar = Despausa a musica
 Trocar = Troca a musica
 Alistar = Musica em queue
 Recomecar = Volta a musica atual para o inicio
+Volume = Muda o volume do programa, valores entre 0.0 e 1.0
