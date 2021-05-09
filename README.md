@@ -11,6 +11,10 @@ Esse programa toca musicas e tem controle quase completo do que esta sendo tocad
         Codigo melhorado e otimizado.
         Anti erros gramaticais e falta de '.mp3' no final do comando.
 
+9/5/21- Grande atualização visual e encremento no portugues.
+        Melhoria no codigo e comandos try colocados para nao fechar sozinho.
+        Arquivo txt criado pelo programa para armazenar as configuracoes do programa.
+
 # Lembretes futuros:
 
 7/5/21- Corrigir sistema de queue.
