@@ -5,19 +5,18 @@ mixer.init()
 sair = 0
 comandos = 0
 
-configs = open('configs.txt', 'r')
-info = float(configs.read())
-configs.close()
-
-if info == 0.0:
-    ok = 1
-else:
-    configs = open('configs.txt', 'w')
-    configs.write('5')
+try:
+    configs = open('configs.txt', 'r')
+    info = float(configs.read())
     configs.close()
+except FileNotFoundError:
+    configs = open('configs.txt', 'w')
+    configs.write('0.5')
+    configs.close
 
-
-
+    configs = open('configs.txt', 'r')
+    info = float(configs.read())
+    configs.close()
 
 mixer.music.set_volume(info)
 
