@@ -5,6 +5,22 @@ mixer.init()
 sair = 0
 comandos = 0
 
+configs = open('configs.txt', 'r')
+info = float(configs.read())
+configs.close()
+
+if info == 0.0:
+    ok = 1
+else:
+    configs = open('configs.txt', 'w')
+    configs.write('5')
+    configs.close()
+
+
+
+
+mixer.music.set_volume(info)
+
 while sair == 0:   
     comandos = 0
     
@@ -19,6 +35,7 @@ while sair == 0:
             musica = musica + '.mp3'
 
         mixer.music.load(musica)
+        sleep(0.5)
         mixer.music.play()
     
     print('')
@@ -27,12 +44,25 @@ while sair == 0:
         comando = str(input('Comando para a musica: ')).strip()
         comando = comando.lower()
         
-        print('')
-
+        tocando = mixer.music.get_busy()
+        if tocando == 0:
+            comandos = 1
+        
         if comando == 'info':
+            print('')
             print('\033[1;35mFoi o Zeki quem fez! Versao 0.1.2')
             print('Alguns bugs estao a solta pelo programa, eu vou corrigir eles...')
             print('Espero que voce goste do que eu fiz >w<\033[m')
+            print('')
+
+        if comando == 'volume':
+            print('')
+            volume = float(input('Volume: '))
+            
+            mixer.music.set_volume(volume)
+            configs = open('configs.txt', 'w')
+            configs.write(str(volume))
+            configs.close()
             print('')
 
         if comando == 'pausar':
@@ -70,5 +100,5 @@ while sair == 0:
                      
 
 print('\033[1;31mSaindo do programa... Tchau!\033[m')
-mixer.music.unload()
+mixer.music.fadeout(200)
 sleep(1)
