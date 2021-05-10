@@ -1,10 +1,10 @@
-Coloque a musica na pasta do programa beta e escreva o nome dele, pode colocar mp3 ou nao, pois nao ha diferenca alguma.
+Coloque a música na pasta do programa beta e escreva o nome dele, pode colocar mp3 ou não, pois não há diferença alguma.
 
-Comandos disponiveis:
+Comandos disponíveis:
 
-Pausar = Pausa a musica
-Retomar = Despausa a musica
+Pausar = Pausa a música
+Retomar = Despausa a música
 Trocar = Troca a musica
-Alistar = Musica em queue
-Recomecar = Volta a musica atual para o inicio
+Alistar = Música em queue
+Recomeçar = Volta a música atual para o inicio
 Volume = Muda o volume do programa, valores entre 0.0 e 1.0
