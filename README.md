@@ -1,8 +1,7 @@
 # Ola:
 
 Um teste aprendendo a usar isso aqui
-Eu não sei o que eu to fazendo, to usando so pra poder aprender memso, tambem nao sei quase nada sobre pytohn porque eu to estudando ele. 
-
+Eu não sei o que eu to fazendo, to usando so pra poder aprender memso, tambem nao sei quase nada sobre python porque eu to estudando ele. 
 Esse programa toca musicas e tem controle quase completo do que esta sendo tocado. Atulmente temos alguns erros mas serao corrigidos.
 
 # Atualizacoes:
@@ -13,7 +12,7 @@ Esse programa toca musicas e tem controle quase completo do que esta sendo tocad
 
 9/5/21- Grande atualização visual e encremento no portugues.
         Melhoria no codigo e comandos try colocados para nao fechar sozinho.
-        Arquivo txt criado pelo programa para armazenar as configuracoes do programa.
+        Arquivo txt criado pelo programa para armazenar as configuracoes do mesmo.
 
 # Lembretes futuros:
 
