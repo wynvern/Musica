@@ -1,20 +1,21 @@
-# Ola:
+# Oi >w<:
 
-Um teste aprendendo a usar isso aqui
-Eu não sei o que eu to fazendo, to usando so pra poder aprender memso, tambem nao sei quase nada sobre python porque eu to estudando ele. 
-Esse programa toca musicas e tem controle quase completo do que esta sendo tocado. Atulmente temos alguns erros mas serao corrigidos.
+Um teste, estou a aprender esse mundo misterioso da programação...
+Eu não sei se o que eu to fazendo ta certo, to usando só pra poder aprender mesmo, tambem nao sei tudo sobre python porque eu to estudando ele. 
+Esse programa toca músicas e tem controle quase completo do que está sendo tocado. Atualmente temos alguns erros mas serão corrigidos.
 
-# Atualizacoes:
+# Atualizações:
 
-7/5/21- Melhoria na importacao da biblioteca.
-        Codigo melhorado e otimizado.
+10/5/21- Executável criado com sucesso e funciona perfeitamente.
+
+9/5/21- Grande atualização visual e incremento no portugues.
+        Melhoria no código e comandos try colocados para não fechar sozinho.
+        Arquivo txt criado pelo programa para armazenar as configurações do mesmo.
+
+7/5/21- Melhoria na importação da biblioteca.
+        Código melhorado e otimizado.
         Anti erros gramaticais e falta de '.mp3' no final do comando.
 
-9/5/21- Grande atualização visual e encremento no portugues.
-        Melhoria no codigo e comandos try colocados para nao fechar sozinho.
-        Arquivo txt criado pelo programa para armazenar as configuracoes do mesmo.
-
-# Lembretes futuros:
+# Futuras correções:
 
 7/5/21- Corrigir sistema de queue.
-        Colocar funcao de trocar o volume do programa.
