@@ -6,6 +6,9 @@ Esse programa toca músicas e tem controle quase completo do que está sendo toc
 
 # Atualizações:
 
+16/5/21- Comando de volume simplificado para números inteiros.
+         Pequena diminuição nos arquivos.
+
 10/5/21- Executável criado com sucesso e funciona perfeitamente.
 
 9/5/21- Grande atualização visual e incremento no portugues.
