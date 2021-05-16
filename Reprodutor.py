@@ -58,12 +58,17 @@ while sair == 0:
         if v0 == True:
             print('')
             v1 = comando.split()
-            volume = float(v1[1])
-            
-            mixer.music.set_volume(volume)
-            configs = open('configs.txt', 'w')
-            configs.write(str(volume))
-            configs.close()
+            if v1[1] == 'info':
+                print('O volume da musica e {:.0f}'.format((mixer.music.get_volume() * 100) + 1))
+                print('')
+            else:
+                volume = float(v1[1]) / 100
+                mixer.music.set_volume(volume)
+                configs = open('configs.txt', 'w')
+                configs.write(str(volume))
+                configs.close()
+
+
 
         if comando == 'pausar':
             mixer.music.pause()
