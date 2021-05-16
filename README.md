@@ -19,3 +19,18 @@ Esse programa toca músicas e tem controle quase completo do que está sendo toc
 # Futuras correções:
 
 7/5/21- Corrigir sistema de queue.
+
+# Instruções e comandos:
+
+Coloque a música na pasta do programa beta e escreva o nome dele, tendo mp3 ou não, não fará diferença alguma.
+O reprodutor criará um arquivo chamado 'Configs' para guardar o valor do som.
+
+Comandos disponíveis:
+
+        Pausar = Pausa a música
+        Retomar = Despausa a música
+        Trocar = Troca a musica
+        Alistar = Música em queue
+        Recomeçar = Volta a música atual para o inicio
+        Volume x = Muda o volume do programa, valores entre 0 e 100
+        Volume info = Mostra o volume do programa

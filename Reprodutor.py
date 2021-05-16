@@ -59,7 +59,7 @@ while sair == 0:
             print('')
             v1 = comando.split()
             if v1[1] == 'info':
-                print('O volume da musica e {:.0f}'.format((mixer.music.get_volume() * 100) + 1))
+                print('O volume da musica e {:.0f}'.format(mixer.music.get_volume() * 100))
                 print('')
             else:
                 volume = float(v1[1]) / 100
