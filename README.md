@@ -21,6 +21,8 @@ Esse programa toca músicas e tem controle quase completo do que está sendo toc
 
 # Futuras correções:
 
+16/5/21- Quando o nome de uma música não existe, o programa fecha.
+
 7/5/21- Corrigir sistema de queue.
 
 # Instruções e comandos:
