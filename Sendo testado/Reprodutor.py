@@ -1,5 +1,7 @@
 from pygame import mixer
 from time import sleep
+
+import pygame
 mixer.init()
 
 sair = 0
@@ -33,10 +35,14 @@ while sair == 0:
         if mp3 == False:
             musica = musica + '.mp3'
 
-        mixer.music.load(musica)
-        sleep(0.5)
-        mixer.music.play()
-    
+        try:
+            mixer.music.load(musica)
+            sleep(0.5)
+            mixer.music.play()
+        except pygame.error:
+            print('A musica {} nao existe'.format(musica))
+
+
     print('')
     
     while comandos == 0:
@@ -63,13 +69,15 @@ while sair == 0:
                 print('O volume da musica e {:.0f}'.format(mixer.music.get_volume() * 100))
                 print('')
             else:
-                volume = float(v1[1]) / 100
-                mixer.music.set_volume(volume)
-                configs = open('configs.txt', 'w')
-                configs.write(str(volume))
-                configs.close()
-
-
+                try:
+                    volume = float(v1[1]) / 100
+                    mixer.music.set_volume(volume)
+                    configs = open('configs.txt', 'w')
+                    configs.write(str(volume))
+                    configs.close()
+                except ValueError:
+                    print('Valor digitado invalido')
+                    print('')
 
         if comando == 'pausar':
             mixer.music.pause()
