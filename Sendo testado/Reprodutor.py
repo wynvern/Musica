@@ -102,7 +102,7 @@ while sair == 0:
             musiquinhas = []
             playlist = int(input('Quantidade de musicas: '))
 
-            configs = open('configs.txt', 'r')
+            arquivo = open('configs.txt', 'w')
             for linha in range(0, playlist):
                 musiquinhas.append(str(input('nome da musica: ')))
                 mp3teste = '.mp3' in musiquinhas[linha]
