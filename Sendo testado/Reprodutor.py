@@ -1,4 +1,6 @@
-from pygame import mixer
+from os import environ
+environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+from pygame import error, mixer
 from time import sleep
 
 import pygame
@@ -24,6 +26,7 @@ except FileNotFoundError:
 
 mixer.music.set_volume(info)
 
+# Principal, serve para colocar a musica
 while sair == 0:
     comandos = 0
 
@@ -44,15 +47,49 @@ while sair == 0:
         except pygame.error as message:
             print('A musica {} nao existe'.format(musica))
 
+
     print('')
 
+    # Segundo, comandos e outros
     while comandos == 0:
         comando = str(input('Comando para a música: ')).strip().lower()
+        confirmacao = 0
 
+        if comando == 'automatico':
+            musiquinhas = []
+            playlist = int(input('Quantidade de musicas: '))
+
+            arquivo = open('musicas.txt', 'w')
+            for linha in range(0, playlist):
+                musiquinhas.append(str(input('nome da musica: ')))
+                mp3teste = '.mp3' in musiquinhas[linha]
+                if mp3teste is False:
+                    arquivo.write(musiquinhas[linha] + '.mp3')
+                else:
+                    arquivo.write(musiquinhas[linha])
+                arquivo.write('\n')
+
+            musicas = []
+            confirmacao = + 1
+            arquivo = open('musicas.txt', 'r')
+            musicas01 = arquivo.readline().strip()
+            musicas = musicas01.split()
+
+            #for queue in range(0, playlist):
+                #mixer.music.queue(musicas[linha -1])
+
+            mixer.music.queue(musicas01)
+
+            print('')
+            print('\033[1;32mAs músicas tocarão depois de {}\033[m'.format(musica))
+            print('')
+        
         tocando = mixer.music.get_busy()
-        if tocando == 0:
-            proxima = arquivo.readline()
-            mixer.music.queue(proxima)
+        #if tocando == 0:
+            #if confirmacao == 1:
+                
+            #else:
+                #comandos = 1
 
         if comando == 'sobre':
             print('')
@@ -98,29 +135,7 @@ while sair == 0:
         if comando == 'recomecar':
             mixer.music.rewind()
 
-        if comando == 'automatico':
-            musiquinhas = []
-            playlist = int(input('Quantidade de musicas: '))
-
-            arquivo = open('configs.txt', 'w')
-            for linha in range(0, playlist):
-                musiquinhas.append(str(input('nome da musica: ')))
-                mp3teste = '.mp3' in musiquinhas[linha]
-                if mp3teste is False:
-                    arquivo.write(musiquinhas[linha] + '.mp3')
-                else:
-                    arquivo.write(musiquinhas[linha])
-                arquivo.write('\n')
-
-            arquivo = open('teste.txt', 'r')
-            musicas = arquivo.readline().strip()
-
-            mixer.music.queue(musicas)
-
-            print('')
-            print('\033[1;32mA música {} foi alistada com sucesso e tocará depois de {}\033[m'.format(musicas, musica))
-            print('')
-
+        
 print('')
 print('\033[1;31mSaindo do programa... Tchau!\033[m')
 print('')
