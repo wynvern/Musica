@@ -6,6 +6,9 @@ Esse programa toca músicas e tem controle quase completo do que está sendo toc
 
 # Atualizações:
 
+22/5/21- Programa otimizado.
+	 Variáveis simplificadas.
+
 16/5/21- Comando de volume simplificado para números inteiros.
          Pequena diminuição nos arquivos.
 
@@ -33,9 +36,11 @@ O reprodutor criará um arquivo chamado 'Configs' para guardar o valor do som.
 Comandos disponíveis:
 
         Pausar = Pausa a música
-        Retomar = Despausa a música
+        Sair = sai do programa, tambem pode ser usado no lugar de perguntar o nome da musica
+	Retomar = Despausa a música
         Trocar = Troca a musica
-        Alistar = Música em queue
+        Queue x= Música em queue, colocar o nome da musica
         Recomeçar = Volta a música atual para o inicio
         Volume x = Muda o volume do programa, valores entre 0 e 100
         Volume info = Mostra o volume do programa
+	Comandos = Mostra os possiveis comandos dentro do programa
