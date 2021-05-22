@@ -1,107 +1,103 @@
+from os import environ
+
+import pygame
+environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 from pygame import mixer
 from time import sleep
 
 mixer.init()
 
-sair = 0
-comandos = 0
+se01, co02, te11 = True, True, False
 
 try:
-    configs = open('configs.txt', 'r')
-    info = float(configs.read())
-    configs.close()
+    st03 = open('configs.txt', 'r')
+    in04 = float(st03.read())
+    st03.close()
 except FileNotFoundError:
-    configs = open('configs.txt', 'w')
-    configs.write('0.5')
-    configs.close()
+    st03 = open('configs.txt', 'w') 
+    st03.write('0.2')
+    st03 = open('configs.txt', 'r')    
+    in04 = float(st03.read())
+    st03.close()
 
-    configs = open('configs.txt', 'r')
-    info = float(configs.read())
-    configs.close()
+mixer.music.set_volume(in04)
 
-mixer.music.set_volume(info)
+# Primeiro, serve para colocar a musica ->
+while se01 is True:
+    co02 = True
+    if te11 is True:
+        print('')
+    
+    mu05 = str(input('Escreva o nome da música para reproduzir: ')).strip().lower()
 
-while sair == 0:
-    comandos = 0
-
-    musica = str(input('Escreva o nome da música para reproduzir: ')).strip().lower()
-
-    if musica == 'sair':
-        sair = + 1
-        comandos = + 1
+    if mu05 == 'sair': 
+        se01, co02 = False, False       
     else:
-        mp3 = '.mp3' in musica
-        if mp3 is False:
-            musica = musica + '.mp3'
+        mp06 = '.mp3' in mu05 
+        if mp06 is False: 
+            mu05 = mu05 + '.mp3'
+    
+        try: 
+            mixer.music.load(mu05)
+        except pygame.error:
+            print('')
+            print('A musica {} nao existe, tente outra'.format(mu05))
+            te11 = True
+            continue
 
-        mixer.music.load(musica)
         sleep(0.5)
         mixer.music.play()
+        print('')
 
-    print('')
+        
 
-    while comandos == 0:
-        comando = str(input('Comando para a música: ')).strip().lower()
+    # Segundo, comandos e outros ->
+    while co02 is True:
+        co07 = str(input('Comando para a música: ')).strip().lower()
+        te11 = True
 
-        tocando = mixer.music.get_busy()
-        if tocando == 0:
-            comandos = 1
+        if mixer.music.get_busy() == 0:
+            se01 = False
 
-        if comando == 'sobre':
+        if co07 == 'sobre':
             print('')
-            print('\033[1;35mFoi o Zeki quem fez! Versão 0.1.3')
+            print('\033[1;35mFoi o Zeki quem fez! Versão 0.1.5')
             print('Alguns bugs estão a solta pelo programa, eu vou corrigir eles...')
             print('Espero que você goste do que eu fiz >w<\033[m')
             print('')
 
-        v1 = + float(info)
-        v0 = 'volume' in comando
-        if v0 is True:
+        vo08 = + float(in04)
+        vo09 = 'volume' in co07
+        if vo09 is True:
             print('')
-            v1 = comando.split()
-            if v1[1] == 'info':
+            vo08 = co07.split()
+            if vo08[1] == 'info':
                 print('O volume da musica e {:.0f}'.format(mixer.music.get_volume() * 100))
                 print('')
             else:
-                volume = float(v1[1]) / 100
-                mixer.music.set_volume(volume)
+                vo10 = float(vo08[1]) / 100
+                mixer.music.set_volume(vo10)
                 configs = open('configs.txt', 'w')
-                configs.write(str(volume))
+                configs.write(str(vo10))
                 configs.close()
 
-        if comando == 'pausar':
+        if co07 == 'pausar':
             mixer.music.pause()
 
-        if comando == 'retomar':
+        if co07 == 'retomar':
             mixer.music.unpause()
 
-        if comando == 'trocar':
+        if co07 == 'trocar':
             mixer.music.unload()
-            musica2 = ''
-            comandos = + 1
+            co02, se01 = False, True
 
-        if comando == 'sair':
-            sair = + 1
-            comandos = + 1
+        if co07 == 'sair':
+            co02, se01 = False, False
 
-        if comando == 'recomecar':
+        if co07 == 'recomecar':
             mixer.music.rewind()
-
-        if comando == 'alistar':
-            musica2 = str(input('Escreva o nome da música para alistar: ')).strip()
-            mp31 = '.mp3' in musica2
-            if mp31 is False:
-                musica2 = musica2 + '.mp3'
-
-            mixer.music.queue(musica2)
-
-            print('')
-            print('\033[1;32mA música {} foi alistada com sucesso e tocará depois de {}\033[m'.format(musica2, musica))
-            print('')
-
-            if mixer.music.queue(musica2):
-                musica2 = 0
-
+ 
+        
 print('')
 print('\033[1;31mSaindo do programa... Tchau!\033[m')
 print('')
