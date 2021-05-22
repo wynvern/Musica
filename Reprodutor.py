@@ -75,7 +75,13 @@ while se01 is True:
                 print('O volume da musica e {:.0f}'.format(mixer.music.get_volume() * 100))
                 print('')
             else:
-                vo10 = float(vo08[1]) / 100
+                try:
+                    vo10 = float(vo08[1]) / 100
+                except ValueError:
+                    print('O valor digitado e invalido')
+                    print('')
+                    continue
+
                 mixer.music.set_volume(vo10)
                 configs = open('configs.txt', 'w')
                 configs.write(str(vo10))
