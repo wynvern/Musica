@@ -87,21 +87,36 @@ while se01 is True:
 
         print('')
         
-        al17 = 'alistar' in co07
-        if al17 is True:
-            try:
-                in18 = int(co07.replace('alistar', '').strip())
-            except ValueError:
-                print('Valor invalido')
-                print('')
-                continue
 
-            li16.clear()
-            for mu22 in range(0, in18):
-                li16.append(str(input('Nome da musica: ')))
-                mp06 = '.mp3' in li16[mu22]
-                if mp06 is False:
-                    li16[mu22] = li16[mu22] + '.mp3'
+        if co07 == 'alistar':
+            in18 = -1
+            en26 = False
+            li15 = 0
+            for musicas in range(0,99):
+                if en26 == False:
+                    li16.append(str(input('Nome da musica: ')))
+                    if li16[li15] == '#':
+                        en26 is True
+                    else:
+                        mp06 = '.mp3' in li16[li15]
+                        if mp06 is False:
+                            li16[li15] = li16[li15] + '.mp3'
+
+                    li15 = li15 + 1
+                    in18 = in18 + 1
+                else:
+                    li16.append(str('#'))
+    
+                if li16[musicas] == '#':
+                    en26 = True
+
+            if en26 is True:
+                for remocao in range(0,99):
+                    try:
+                        li16.remove('#')
+                    except ValueError:
+                        continue
+
             threading.Thread(target=is13).start()
             
         qe12 = 'queue' in co07
