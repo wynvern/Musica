@@ -1,12 +1,43 @@
 from os import environ
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
+import threading
 from pygame import mixer
 from time import sleep
 
 mixer.init()
 
-se01, co02, te11 = True, True, False
+se01, co02, te11, te19 = True, True, False, False
+li16 = []
+
+global var
+var = False
+
+def is13():
+    ne21 = 0
+    li15 = 0
+    for tocando in range(999):
+        if var == True:
+            break
+        else:
+            if te19 is False:
+                if mixer.music.get_busy() == 0:
+                    if li15 != in18:
+                        try: 
+                            mixer.music.load(li16[li15])
+                            mixer.music.play()
+                            li15 = li15 + 1
+                        except pygame.error:
+                            li15 = li15 + 1
+                            continue
+                    else:      
+                        ne21 = 0
+                else:
+                    ne21 = 0
+            else:
+                ne21 = 0
+    
+        sleep(1)
 
 try:
     st03 = open('configs.txt', 'r')
@@ -23,6 +54,7 @@ mixer.music.set_volume(in04)
 
 # Primeiro, serve para colocar a musica ->
 while se01 is True:
+    var = False
     co02 = True
     if te11 is True:
         print('')
@@ -55,12 +87,26 @@ while se01 is True:
 
         print('')
         
-        if mixer.music.get_busy() == 0:
-            se01 = False
+        al17 = 'alistar' in co07
+        if al17 is True:
+            try:
+                in18 = int(co07.replace('alistar', '').strip())
+            except ValueError:
+                print('Valor invalido')
+                print('')
+                continue
 
-        qe12 = 'alistar' in co07
+            li16.clear()
+            for mu22 in range(0, in18):
+                li16.append(str(input('Nome da musica: ')))
+                mp06 = '.mp3' in li16[mu22]
+                if mp06 is False:
+                    li16[mu22] = li16[mu22] + '.mp3'
+            threading.Thread(target=is13).start()
+            
+        qe12 = 'queue' in co07
         if qe12 is True:
-            co07 = co07.replace('alistar', '').strip()
+            co07 = co07.replace('queue', '').strip()
             mp06 = 'mp3' in co07
             if mp06 is False:
                 co07 = co07 + '.mp3'
@@ -82,7 +128,6 @@ while se01 is True:
         vo08 = + float(in04)
         vo09 = 'volume' in co07
         if vo09 is True:
-            print('')
             vo08 = co07.split()
             if vo08[1] == 'info':
                 print('O volume da música é {:.0f}'.format(mixer.music.get_volume() * 100))
@@ -102,16 +147,19 @@ while se01 is True:
 
         if co07 == 'pausar':
             mixer.music.pause()
+            te19 = True
 
         if co07 == 'retomar':
             mixer.music.unpause()
+            te19 = False
 
         if co07 == 'trocar':
             mixer.music.unload()
-            co02, se01 = False, True
+            co02, se01, var, li15 = False, True, True, 0
+            li16.clear()
 
         if co07 == 'sair':
-            co02, se01 = False, False
+            co02, se01, var = False, False, True
 
         if co07 == 'recomecar':
             mixer.music.rewind()
