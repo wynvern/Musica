@@ -1,4 +1,5 @@
 from os import environ
+import glob
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 import threading
@@ -8,10 +9,14 @@ from time import sleep
 mixer.init()
 
 se01, co02, te11, te19 = True, True, False, False
+tocando_musicas_diretorio = False
 li16 = []
 
 global var
 var = False
+
+def thread():
+    threading.Thread(target=is13).start()
 
 def is13():
     ne21 = 0
@@ -21,22 +26,28 @@ def is13():
             break
         else:
             if te19 is False:
-                if mixer.music.get_busy() == 0:
-                    if li15 != in18:
-                        try: 
-                            mixer.music.load(li16[li15])
-                            mixer.music.play()
-                            li15 = li15 + 1
-                        except pygame.error:
-                            li15 = li15 + 1
-                            continue
-                    else:      
+                if tocando_musicas_diretorio is False:
+                    if mixer.music.get_busy() == 0:
+                        if li15 != in18:
+                            try: 
+                                mixer.music.load(li16[li15])
+                                mixer.music.play()
+                                li15 = li15 + 1
+                            except pygame.error:
+                                li15 = li15 + 1
+                                continue
+                        else:      
+                            ne21 = 0
+                    else:
                         ne21 = 0
                 else:
-                    ne21 = 0
-            else:
-                ne21 = 0
-    
+                    if mixer.music.get_busy() == 0:
+                        musica_tocar = arquivos_velho + procura_arquivos[li15]
+                        mixer.music.load(musica_tocar)
+                        mixer.music.play()
+                        li15 = li15 + 1
+                    else:
+                        ne21 = 0
         sleep(1)
 
 try:
@@ -86,9 +97,27 @@ while se01 is True:
         te11 = True
 
         print('')
-        
+
+        if co07 == 'proxima':
+            mixer.music.unload()
+            te19 = False
+
+        if co07 == 'pasta':
+            localizacao_arquivos = str(input('Digite a localizacao dos seus arquivos de musica: ')).strip() + '\*.mp3'
+            procura_arquivos = glob.glob(localizacao_arquivos)
+            arquivos_velho = localizacao_arquivos.replace('*.mp3', '').strip()
+            for numero_atual in range(0, 99):
+                try:
+                    procura_arquivos[numero_atual] = procura_arquivos[numero_atual].replace(arquivos_velho, '').strip()
+    
+                except IndexError:
+                    continue
+            
+            tocando_musicas_diretorio = True
+            thread()
 
         if co07 == 'alistar':
+            tocando_musicas_diretorio = False
             in18 = -1
             en26 = False
             li15 = 0
@@ -117,7 +146,7 @@ while se01 is True:
                     except ValueError:
                         continue
 
-            threading.Thread(target=is13).start()
+            thread()
             
         qe12 = 'queue' in co07
         if qe12 is True:
@@ -132,7 +161,7 @@ while se01 is True:
             except pygame.error:
                 print('Musica nao existe')
                 continue
-
+                   
         if co07 == 'sobre':
             print('')
             print('\033[1;35mFoi o Zeki quem fez! Versão 0.1.5')
