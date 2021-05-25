@@ -30,7 +30,11 @@ def is13():
                     if mixer.music.get_busy() == 0:
                         if li15 != in18:
                             try: 
-                                mixer.music.load(li16[li15])
+                                try:
+                                    mixer.music.load(li16[li15])
+                                
+                                except IndexError:
+                                    break
                                 mixer.music.play()
                                 li15 = li15 + 1
                             except pygame.error:
@@ -118,14 +122,15 @@ while se01 is True:
 
         if co07 == 'alistar':
             tocando_musicas_diretorio = False
-            in18 = -1
+            in18 = 0
+            li16 = []
             en26 = False
             li15 = 0
             for musicas in range(0,99):
-                if en26 == False:
+                if en26 is False:
                     li16.append(str(input('Nome da musica: ')))
                     if li16[li15] == '#':
-                        en26 is True
+                        en26 = True
                     else:
                         mp06 = '.mp3' in li16[li15]
                         if mp06 is False:
