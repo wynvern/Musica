@@ -1,17 +1,12 @@
 from os import environ
-import glob
+import glob, threading
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-import pygame
-import threading
-from pygame import mixer
+from pygame import mixer, error
 from time import sleep
 
 mixer.init()
 
-se01, co02, te11, te19 = True, True, False, False
-tocando_musicas_diretorio = False
-li16 = []
-
+se01, co02, te11, te19, li16 = True, True, False, False, []
 global var
 var = False
 
@@ -19,9 +14,8 @@ def thread():
     threading.Thread(target=is13).start()
 
 def is13():
-    ne21 = 0
     li15 = 0
-    for tocando in range(999):
+    for esta_tocando in range(999):
         if var == True:
             break
         else:
@@ -37,13 +31,13 @@ def is13():
                                     break
                                 mixer.music.play()
                                 li15 = li15 + 1
-                            except pygame.error:
+                            except error:
                                 li15 = li15 + 1
                                 continue
                         else:      
-                            ne21 = 0
+                            continue
                     else:
-                        ne21 = 0
+                        continue
                 else:
                     if mixer.music.get_busy() == 0:
                         musica_tocar = arquivos_velho + procura_arquivos[li15]
@@ -51,7 +45,7 @@ def is13():
                         mixer.music.play()
                         li15 = li15 + 1
                     else:
-                        ne21 = 0
+                        continue
         sleep(1)
 
 try:
@@ -85,7 +79,7 @@ while se01 is True:
 
         try:
             mixer.music.load(mu05)
-        except pygame.error:
+        except error:
             print('')
             print('A música {} não existe, tente outro arquivo'.format(mu05))
             te11 = True
@@ -107,6 +101,7 @@ while se01 is True:
             te19 = False
 
         if co07 == 'pasta':
+            tocando_musicas_diretorio = True
             localizacao_arquivos = str(input('Digite a localizacao dos seus arquivos de musica: ')).strip() + '\*.mp3'
             procura_arquivos = glob.glob(localizacao_arquivos)
             arquivos_velho = localizacao_arquivos.replace('*.mp3', '').strip()
@@ -163,7 +158,7 @@ while se01 is True:
             try:    
                 mixer.music.queue(co07)
                 print('Música {} alistada com sucesso'.format(co07))
-            except pygame.error:
+            except error:
                 print('Musica nao existe')
                 continue
                    
