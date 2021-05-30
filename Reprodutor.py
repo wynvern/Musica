@@ -85,7 +85,7 @@ while se01 is True:
     if te11 is True:
         print('')
 
-    mu05 = str(input('Escreva o nome da música para reproduzir: ')).strip().lower()
+    mu05 = str(input('Nome da música para reproduzir: ')).strip().lower()
 
     if mu05 == 'sair':
         se01, co02 = False, False
@@ -123,7 +123,7 @@ while se01 is True:
         
         if co07 == 'pasta':
             tocando_musicas_diretorio = True
-            localizacao_arquivos = str(input('Digite a localizacao dos seus arquivos de musica: ')).strip() + '\*.mp3'
+            localizacao_arquivos = str(input('Cole a localização dos seus arquivos de música: ')).strip() + '\*.mp3'
             procura_arquivos = glob.glob(localizacao_arquivos)
             arquivos_velho = localizacao_arquivos.replace('*.mp3', '').strip()
             for numero_atual in range(0, 99):
@@ -144,7 +144,7 @@ while se01 is True:
             li15 = 0
             for musicas in range(0, 99):
                 if en26 is False:
-                    li16.append(str(input('Nome da musica: ')))
+                    li16.append(str(input('Nome da música: ')))
                     if li16[li15] == '#':
                         en26 = True
                     else:
@@ -180,7 +180,7 @@ while se01 is True:
                 mixer.music.queue(co07)
                 print('Música {} alistada com sucesso'.format(co07))
             except error:
-                print('Musica nao existe')
+                print('Música não existe')
                 continue
 
         if co07 == 'voltar':
@@ -189,7 +189,7 @@ while se01 is True:
 
         if co07 == 'sobre':
             print('')
-            print('\033[1;35mFoi o Zeki quem fez! Versão 0.1.5')
+            print('\033[1;35mFoi o Zeki quem fez! Versão 0.1.6')
             print('Alguns bugs estão a solta pelo programa, eu vou corrigir eles...')
             print('Espero que você goste do que eu fiz >w<\033[m')
             print('')
@@ -236,14 +236,18 @@ while se01 is True:
         if co07 == 'comandos':
             print('''
 Pausar = Pausa a música
-Sair = sai do programa, tambem pode ser usado no lugar de perguntar o nome da musica
+Sair = Sai do programa, também pode ser usado no lugar de perguntar o nome da musica
 Retomar = Despausa a música
+Proxima = Vai para a próxima música
+Voltar = Volta para a antiga música
 Trocar = Troca a musica
-Alistar x= Música em queue, colocar o nome da musica
-Recomeçar = Volta a música atual para o inicio
+Queue x= Música em queue, colocar o nome da musica
+Alistar = Alistar até 99 músicas, digite # para parar de pedir músicas
+Pasta = Toca todas as músicas em formato mp3 de uma pasta sugerida
+Recomeçar = Volta a música atual para o início
 Volume x = Muda o volume do programa, valores entre 0 e 100
 Volume info = Mostra o volume do programa
-Comandos = Mostra os possiveis comandos dentro do programa
+Comandos = Mostra os possíveis comandos dentro do programa
 ''')
 
 var = True

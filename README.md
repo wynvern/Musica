@@ -42,15 +42,15 @@ Comandos disponíveis:
 
         Pausar = Pausa a música
         Sair = Sai do programa, também pode ser usado no lugar de perguntar o nome da musica
-	Retomar = Despausa a música
+        Retomar = Despausa a música
         Proxima = Vai para a próxima música
-	Voltar = Volta para a antiga música
-	Trocar = Troca a musica
+        Voltar = Volta para a antiga música
+        Trocar = Troca a musica
         Queue x= Música em queue, colocar o nome da musica
         Alistar = Alistar até 99 músicas, digite # para parar de pedir músicas
-	Pasta = Toca todas as músicas em formato mp3 de uma pasta sugerida
-	Recomeçar = Volta a música atual para o início
+        Pasta = Toca todas as músicas em formato mp3 de uma pasta sugerida
+        Recomeçar = Volta a música atual para o início
         Volume x = Muda o volume do programa, valores entre 0 e 100
         Volume info = Mostra o volume do programa
-	Comandos = Mostra os possíveis comandos dentro do programa
+        Comandos = Mostra os possíveis comandos dentro do programa
 
