@@ -1,52 +1,69 @@
 from os import environ
-import glob, threading
+
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 from pygame import mixer, error
+del environ
 from time import sleep
 
-mixer.init()
+import glob
+import threading
 
-se01, co02, te11, te19, li16 = True, True, False, False, []
+mixer.init()
+global voltar_musica
+se01, co02, te11, te19, li16, pular_inicio, voltar_musica = True, True, False, False, [], False, 0
 global var
 var = False
+
 
 def thread():
     threading.Thread(target=is13).start()
 
+
 def is13():
-    li15 = 0
+    global voltar_musica
+    numero_atual_tocando = 0
+    neutro = 0
     for esta_tocando in range(999):
-        if var == True:
+        if var:
             break
-        else:
-            if te19 is False:
-                if tocando_musicas_diretorio is False:
-                    if mixer.music.get_busy() == 0:
-                        if li15 != in18:
-                            try: 
-                                try:
-                                    mixer.music.load(li16[li15])
-                                
-                                except IndexError:
-                                    break
-                                mixer.music.play()
-                                li15 = li15 + 1
-                            except error:
-                                li15 = li15 + 1
-                                continue
-                        else:      
+
+        if te19 is False:
+            if tocando_musicas_diretorio is False:
+                if voltar_musica == 1:
+                    numero_atual_tocando = numero_atual_tocando - 2
+                    sleep(1)
+                    voltar_musica = 0
+                if mixer.music.get_busy() == 0:
+                    if numero_atual_tocando != in18:
+                        try:
+                            try:
+                                mixer.music.load(li16[numero_atual_tocando])
+
+                            except IndexError:
+                                break
+                            mixer.music.play()
+                            numero_atual_tocando = numero_atual_tocando + 1
+                        except error:
+                            numero_atual_tocando = numero_atual_tocando + 1
                             continue
                     else:
-                        continue
+                        neutro = 0
                 else:
-                    if mixer.music.get_busy() == 0:
-                        musica_tocar = arquivos_velho + procura_arquivos[li15]
-                        mixer.music.load(musica_tocar)
-                        mixer.music.play()
-                        li15 = li15 + 1
-                    else:
-                        continue
-        sleep(1)
+                    neutro = 0
+            else:
+                if voltar_musica == 1:
+                    numero_atual_tocando = numero_atual_tocando - 2
+                    sleep(1)
+                    voltar_musica = 0
+                if mixer.music.get_busy() == 0:
+                    musica_tocar = arquivos_velho + procura_arquivos[numero_atual_tocando]
+                    mixer.music.load(musica_tocar)
+                    mixer.music.play()
+                    numero_atual_tocando = numero_atual_tocando + 1
+                else:
+                    neutro = 0
+        sleep(0.5)
+
 
 try:
     st03 = open('configs.txt', 'r')
@@ -73,20 +90,24 @@ while se01 is True:
     if mu05 == 'sair':
         se01, co02 = False, False
     else:
-        mp06 = '.mp3' in mu05
-        if mp06 is False:
-            mu05 = mu05 + '.mp3'
+        if mu05 == '':
+            pular_inicio = True
+        else:
+            mp06 = '.mp3' in mu05
+            if mp06 is False:
+                mu05 = mu05 + '.mp3'
 
-        try:
-            mixer.music.load(mu05)
-        except error:
-            print('')
-            print('A música {} não existe, tente outro arquivo'.format(mu05))
-            te11 = True
-            continue
+        if pular_inicio is False:
+            try:
+                mixer.music.load(mu05)
+            except error:
+                print('')
+                print('A música {} não existe, tente outro arquivo'.format(mu05))
+                te11 = True
+                continue
 
-        sleep(0.5)
-        mixer.music.play()
+            sleep(0.5)
+            mixer.music.play()
         print('')
 
     # Segundo, comandos e outros ->
@@ -99,7 +120,7 @@ while se01 is True:
         if co07 == 'proxima':
             mixer.music.unload()
             te19 = False
-
+        
         if co07 == 'pasta':
             tocando_musicas_diretorio = True
             localizacao_arquivos = str(input('Digite a localizacao dos seus arquivos de musica: ')).strip() + '\*.mp3'
@@ -108,10 +129,10 @@ while se01 is True:
             for numero_atual in range(0, 99):
                 try:
                     procura_arquivos[numero_atual] = procura_arquivos[numero_atual].replace(arquivos_velho, '').strip()
-    
+
                 except IndexError:
                     continue
-            
+
             tocando_musicas_diretorio = True
             thread()
 
@@ -121,7 +142,7 @@ while se01 is True:
             li16 = []
             en26 = False
             li15 = 0
-            for musicas in range(0,99):
+            for musicas in range(0, 99):
                 if en26 is False:
                     li16.append(str(input('Nome da musica: ')))
                     if li16[li15] == '#':
@@ -135,19 +156,19 @@ while se01 is True:
                     in18 = in18 + 1
                 else:
                     li16.append(str('#'))
-    
+
                 if li16[musicas] == '#':
                     en26 = True
 
             if en26 is True:
-                for remocao in range(0,99):
+                for remocao in range(0, 99):
                     try:
                         li16.remove('#')
                     except ValueError:
                         continue
 
             thread()
-            
+
         qe12 = 'queue' in co07
         if qe12 is True:
             co07 = co07.replace('queue', '').strip()
@@ -155,13 +176,17 @@ while se01 is True:
             if mp06 is False:
                 co07 = co07 + '.mp3'
 
-            try:    
+            try:
                 mixer.music.queue(co07)
                 print('Música {} alistada com sucesso'.format(co07))
             except error:
                 print('Musica nao existe')
                 continue
-                   
+
+        if co07 == 'voltar':
+            voltar_musica = 1
+            mixer.music.unload()
+
         if co07 == 'sobre':
             print('')
             print('\033[1;35mFoi o Zeki quem fez! Versão 0.1.5')
@@ -199,7 +224,7 @@ while se01 is True:
 
         if co07 == 'trocar':
             mixer.music.unload()
-            co02, se01, var, li15 = False, True, True, 0
+            co02, se01, var, li15, pular_inicio = False, True, True, 0, False
             li16.clear()
 
         if co07 == 'sair':
@@ -221,7 +246,7 @@ Volume info = Mostra o volume do programa
 Comandos = Mostra os possiveis comandos dentro do programa
 ''')
 
-
+var = True
 print('')
 print('\033[1;31mSaindo do programa... Tchau!\033[m')
 print('')
