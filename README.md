@@ -6,6 +6,11 @@ Esse programa toca músicas e tem controle quase completo do que está sendo toc
 
 # Atualizações:
 
+30/5/21- Reforma drástica.
+	 Thread adicionado para tocar músicas de uma pasta ou de uma lista.
+	 Simplificado alguns parâmetros.
+	 Erros que fecham o programa corrigidos.
+
 22/5/21- Programa otimizado.
 	 Variáveis simplificadas.
 
@@ -36,11 +41,16 @@ O reprodutor criará um arquivo chamado 'Configs' para guardar o valor do som.
 Comandos disponíveis:
 
         Pausar = Pausa a música
-        Sair = sai do programa, tambem pode ser usado no lugar de perguntar o nome da musica
+        Sair = Sai do programa, também pode ser usado no lugar de perguntar o nome da musica
 	Retomar = Despausa a música
-        Trocar = Troca a musica
+        Proxima = Vai para a próxima música
+	Voltar = Volta para a antiga música
+	Trocar = Troca a musica
         Queue x= Música em queue, colocar o nome da musica
-        Recomeçar = Volta a música atual para o inicio
+        Alistar = Alistar até 99 músicas, digite # para parar de pedir músicas
+	Pasta = Toca todas as músicas em formato mp3 de uma pasta sugerida
+	Recomeçar = Volta a música atual para o início
         Volume x = Muda o volume do programa, valores entre 0 e 100
         Volume info = Mostra o volume do programa
-	Comandos = Mostra os possiveis comandos dentro do programa
+	Comandos = Mostra os possíveis comandos dentro do programa
+
