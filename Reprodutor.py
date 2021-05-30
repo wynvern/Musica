@@ -56,7 +56,14 @@ def is13():
                     sleep(1)
                     voltar_musica = 0
                 if mixer.music.get_busy() == 0:
-                    musica_tocar = arquivos_velho + procura_arquivos[numero_atual_tocando]
+                    try:
+                        musica_tocar = arquivos_velho + procura_arquivos[numero_atual_tocando]
+                    
+                    except IndexError:
+                        print('')
+                        print('Não existem arquivos de música nesse diretório')
+                        print('')
+                        break
                     mixer.music.load(musica_tocar)
                     mixer.music.play()
                     numero_atual_tocando = numero_atual_tocando + 1
@@ -67,13 +74,16 @@ def is13():
 
 try:
     st03 = open('configs.txt', 'r')
-    in04 = float(st03.read())
+    in04 = float(st03.readline())
+    mostrar_cores = (int(st03.readline()))
     st03.close()
 except FileNotFoundError:
     st03 = open('configs.txt', 'w')
-    st03.write('0.2')
+    st03.write('0.2\n')
+    st03.write('0')
     st03 = open('configs.txt', 'r')
-    in04 = float(st03.read())
+    in04 = float(st03.readline())
+    mostrar_cores = int(st03.readline())
     st03.close()
 
 mixer.music.set_volume(in04)
@@ -180,7 +190,8 @@ while se01 is True:
                 mixer.music.queue(co07)
                 print('Música {} alistada com sucesso'.format(co07))
             except error:
-                print('Música não existe')
+                print('Música {} não existe'.format(co07))
+                print('')
                 continue
 
         if co07 == 'voltar':
@@ -188,11 +199,15 @@ while se01 is True:
             mixer.music.unload()
 
         if co07 == 'sobre':
-            print('')
-            print('\033[1;35mFoi o Zeki quem fez! Versão 0.1.6')
+            if mostrar_cores == 1:
+                print('\033[1;35m')
+            print('Foi o Zeki quem fez! Versão 0.1.6')
             print('Alguns bugs estão a solta pelo programa, eu vou corrigir eles...')
-            print('Espero que você goste do que eu fiz >w<\033[m')
-            print('')
+            print('Espero que você goste do que eu fiz >w<')
+            if mostrar_cores == 1:
+                print('\033[m')
+            else:
+                print('')
 
         vo08 = + float(in04)
         vo09 = 'volume' in co07
@@ -210,9 +225,11 @@ while se01 is True:
                     continue
 
                 mixer.music.set_volume(vo10)
-                configs = open('configs.txt', 'w')
-                configs.write(str(vo10))
-                configs.close()
+                st03 = open('configs.txt', 'w')
+                st03.writelines(str(vo10))
+                st03.writelines('\n')
+                st03.writelines(str(mostrar_cores))
+                st03.close()
 
         if co07 == 'pausar':
             mixer.music.pause()
@@ -221,6 +238,24 @@ while se01 is True:
         if co07 == 'retomar':
             mixer.music.unpause()
             te19 = False
+
+        if co07 == 'cores':
+            if mostrar_cores == 0:
+                mostrar_cores = 1
+            else:
+                mostrar_cores = 0
+            
+            st03 = open('configs.txt', 'w')
+            try:
+                st03.writelines(str(vo10))
+                st03.writelines('\n')
+
+            except NameError:
+                st03.writelines(str(in04))
+                st03.writelines('\n')
+            st03.writelines(str(mostrar_cores))
+            st03.close()
+
 
         if co07 == 'trocar':
             mixer.music.unload()
@@ -251,8 +286,9 @@ Comandos = Mostra os possíveis comandos dentro do programa
 ''')
 
 var = True
-print('')
-print('\033[1;31mSaindo do programa... Tchau!\033[m')
-print('')
+if mostrar_cores == 1:
+    print('\033[1;31m')
+print('Saindo do programa... Tchau!')
+print('\033[m')
 mixer.music.fadeout(200)
 sleep(1)

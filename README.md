@@ -50,6 +50,7 @@ Comandos disponíveis:
         Alistar = Alistar até 99 músicas, digite # para parar de pedir músicas
         Pasta = Toca todas as músicas em formato mp3 de uma pasta sugerida
         Recomeçar = Volta a música atual para o início
+        Cores = Ativa e desativa as cores no terminal, raramente as cores funcionarão
         Volume x = Muda o volume do programa, valores entre 0 e 100
         Volume info = Mostra o volume do programa
         Comandos = Mostra os possíveis comandos dentro do programa
