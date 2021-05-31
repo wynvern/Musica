@@ -1,19 +1,16 @@
 from os import environ
-
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 from pygame import mixer, error
 del environ
 from time import sleep
-
 import glob
 import threading
 
 mixer.init()
-global voltar_musica
-se01, co02, te11, te19, li16, pular_inicio, voltar_musica = True, True, False, False, [], False, 0
-global var
-var = False
 
+global voltar_musica
+global var
+se01, co02, te11, te19, li16, pular_inicio, voltar_musica, var = True, True, False, False, [], False, 0, False
 
 def thread():
     threading.Thread(target=is13).start()
@@ -23,7 +20,7 @@ def is13():
     global voltar_musica
     numero_atual_tocando = 0
     neutro = 0
-    for esta_tocando in range(999):
+    while True:
         if var:
             break
 
@@ -31,7 +28,6 @@ def is13():
             if tocando_musicas_diretorio is False:
                 if voltar_musica == 1:
                     numero_atual_tocando = numero_atual_tocando - 2
-                    sleep(1)
                     voltar_musica = 0
                 if mixer.music.get_busy() == 0:
                     if numero_atual_tocando != in18:
@@ -46,14 +42,9 @@ def is13():
                         except error:
                             numero_atual_tocando = numero_atual_tocando + 1
                             continue
-                    else:
-                        neutro = 0
-                else:
-                    neutro = 0
             else:
                 if voltar_musica == 1:
                     numero_atual_tocando = numero_atual_tocando - 2
-                    sleep(1)
                     voltar_musica = 0
                 if mixer.music.get_busy() == 0:
                     try:
@@ -88,7 +79,6 @@ except FileNotFoundError:
 
 mixer.music.set_volume(in04)
 
-# Primeiro, serve para colocar a musica ->
 while se01 is True:
     var = False
     co02 = True
@@ -102,6 +92,9 @@ while se01 is True:
     else:
         if mu05 == '':
             pular_inicio = True
+            from os import system, name
+            system('cls' if name == 'nt' else 'clear')
+            del system, name
         else:
             mp06 = '.mp3' in mu05
             if mp06 is False:
@@ -118,9 +111,7 @@ while se01 is True:
 
             sleep(0.5)
             mixer.music.play()
-        print('')
 
-    # Segundo, comandos e outros ->
     while co02 is True:
         co07 = str(input('Comando para a música: ')).strip().lower()
         te11 = True
@@ -177,6 +168,7 @@ while se01 is True:
                     except ValueError:
                         continue
 
+            print('')
             thread()
 
         qe12 = 'queue' in co07
@@ -193,6 +185,7 @@ while se01 is True:
                 print('Música {} não existe'.format(co07))
                 print('')
                 continue
+            print('')
 
         if co07 == 'voltar':
             voltar_musica = 1
@@ -206,6 +199,7 @@ while se01 is True:
             print('Espero que você goste do que eu fiz >w<')
             if mostrar_cores == 1:
                 print('\033[m')
+                print('')
             else:
                 print('')
 
@@ -269,8 +263,7 @@ while se01 is True:
             mixer.music.rewind()
 
         if co07 == 'comandos':
-            print('''
-Pausar = Pausa a música
+            print('''Pausar = Pausa a música
 Sair = Sai do programa, também pode ser usado no lugar de perguntar o nome da musica
 Retomar = Despausa a música
 Proxima = Vai para a próxima música
@@ -285,10 +278,22 @@ Volume info = Mostra o volume do programa
 Comandos = Mostra os possíveis comandos dentro do programa
 ''')
 
-var = True
-if mostrar_cores == 1:
-    print('\033[1;31m')
-print('Saindo do programa... Tchau!')
-print('\033[m')
+def sair_diminuir(texto):
+    if mostrar_cores == 1:
+        print('\033[1;31m')
+    sleep(0.5)
+    system('cls' if name == 'nt' else 'clear')
+    print(texto)
+
 mixer.music.fadeout(200)
+from os import system, name
+
+sair_diminuir('Saindo do programa')
+for teste in range(1, 4):
+    sair_diminuir('Saindo do programa' + '.' * teste)
+
+if mostrar_cores == 1:
+    print('\033[m')
+else: print('')
+
 sleep(1)
