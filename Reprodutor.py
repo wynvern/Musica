@@ -12,6 +12,27 @@ global voltar_musica
 global var
 se01, co02, te11, te19, li16, pular_inicio, voltar_musica, var = True, True, False, False, [], False, 0, False
 
+def editor_arquivo():
+    mixer.music.set_volume(vo10)
+    st03 = open('configs.txt', 'w')
+    st03.writelines(str(vo10))
+    st03.writelines('\n')
+    st03.writelines(str(mostrar_cores))
+    st03.close()
+
+
+def arquivo_errado(mensagem):
+    print(mensagem)
+    print('')
+    st03 = open('configs.txt', 'w')
+    st03.write('0.2\n')
+    st03.write('0')
+    st03 = open('configs.txt', 'r')
+    in04 = float(st03.readline())
+    mostrar_cores = int(st03.readline())
+    st03.close()
+
+
 def thread():
     threading.Thread(target=is13).start()
 
@@ -69,6 +90,19 @@ try:
     mostrar_cores = (int(st03.readline()))
     st03.close()
 except FileNotFoundError:
+    print('Arquivo deletado, criando um novo...')
+    print('')
+    st03 = open('configs.txt', 'w')
+    st03.write('0.2\n')
+    st03.write('0')
+    st03 = open('configs.txt', 'r')
+    in04 = float(st03.readline())
+    mostrar_cores = int(st03.readline())
+    st03.close()
+
+except ValueError:
+    print('Arquivos com valores errados, revertendo...')
+    print('')
     st03 = open('configs.txt', 'w')
     st03.write('0.2\n')
     st03.write('0')
@@ -78,6 +112,7 @@ except FileNotFoundError:
     st03.close()
 
 mixer.music.set_volume(in04)
+vo10 = in04
 
 while se01 is True:
     var = False
@@ -218,12 +253,7 @@ while se01 is True:
                     print('')
                     continue
 
-                mixer.music.set_volume(vo10)
-                st03 = open('configs.txt', 'w')
-                st03.writelines(str(vo10))
-                st03.writelines('\n')
-                st03.writelines(str(mostrar_cores))
-                st03.close()
+            editor_arquivo()
 
         if co07 == 'pausar':
             mixer.music.pause()
@@ -240,16 +270,8 @@ while se01 is True:
                 mostrar_cores = 0
             
             st03 = open('configs.txt', 'w')
-            try:
-                st03.writelines(str(vo10))
-                st03.writelines('\n')
-
-            except NameError:
-                st03.writelines(str(in04))
-                st03.writelines('\n')
-            st03.writelines(str(mostrar_cores))
-            st03.close()
-
+            
+            editor_arquivo()
 
         if co07 == 'trocar':
             mixer.music.unload()
@@ -285,15 +307,15 @@ def sair_diminuir(texto):
     system('cls' if name == 'nt' else 'clear')
     print(texto)
 
-mixer.music.fadeout(200)
 from os import system, name
 
 sair_diminuir('Saindo do programa')
 for teste in range(1, 4):
+    mixer.music.fadeout(200)
     sair_diminuir('Saindo do programa' + '.' * teste)
 
 if mostrar_cores == 1:
     print('\033[m')
 else: print('')
 
-sleep(1)
+sleep(0.5)
