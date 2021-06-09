@@ -1,36 +1,77 @@
 from os import environ
+from time import sleep
+import threading
+import keyboard
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 from pygame import mixer, error
 del environ
-from time import sleep
-import glob
-import threading
 
 mixer.init()
 
 global voltar_musica
-global var
-se01, co02, te11, te19, li16, pular_inicio, voltar_musica, var = True, True, False, False, [], False, 0, False
+
+se01, co02, te11, te19, li16, pular_inicio, voltar_musica, var, tocando_musicas_diretorio, tocando_musicas_lista = True, True, False, False, [], False, 0, False, False, False
+
+def ativador_cores(cor, momento):
+    if momento == 0:
+        if mostrar_cores == 1:
+            print(cor)
+        else:
+            print('')
+    else:
+        print(cor)
+
+
+def Teclado_atalhos():
+    sleep_ja = 0
+    while True:    
+        if var is True: break
+        if tocando_musicas_diretorio or tocando_musicas_lista is True:
+            if keyboard.is_pressed('}'):
+                proxima()  
+                sleep(2)
+            else:
+                sleep_ja = sleep_ja + 1
+                sleep(0.1)
+
+            if keyboard.is_pressed('{'):
+                voltar()
+                sleep(2)
+            else:
+                if sleep_ja == 1:
+                    sleep_ja = 0
+                else:
+                    sleep(0.1)
+        else:
+            sleep(3)
+
+def voltar():
+    global voltar_musica
+    voltar_musica = 1
+    mixer.music.unload()
+
+def proxima():
+    global te19
+    mixer.music.unload()
+    te19 = False
+
 
 def editor_arquivo():
     mixer.music.set_volume(vo10)
-    st03 = open('configs.txt', 'w')
-    st03.writelines(str(vo10))
-    st03.writelines('\n')
-    st03.writelines(str(mostrar_cores))
-    st03.close()
+    arquivo_configs = open('configs.txt', 'w')
+    arquivo_configs.writelines(str(vo10))
+    arquivo_configs.writelines('\n')
+    arquivo_configs.writelines(str(mostrar_cores))
+    arquivo_configs.close()
 
 
 def arquivo_errado(mensagem):
     print(mensagem)
     print('')
-    st03 = open('configs.txt', 'w')
-    st03.write('0.2\n')
-    st03.write('0')
-    st03 = open('configs.txt', 'r')
-    in04 = float(st03.readline())
-    mostrar_cores = int(st03.readline())
-    st03.close()
+    arquivo_configs = open('configs.txt', 'w')
+    arquivo_configs.write('0.2\n')
+    arquivo_configs.write('0')
+    arquivo_configs.close()
 
 
 def thread():
@@ -38,19 +79,30 @@ def thread():
 
 
 def is13():
+    global tocando_musicas_diretorio
+    global tocando_musicas_lista
+    global li16
+    global in18
+    global var
     global voltar_musica
+    global li16
+    global contador
+    global numero_atual_tocando
     numero_atual_tocando = 0
-    neutro = 0
+    contador = 0
     while True:
-        if var:
+        if var is True:
             break
 
         if te19 is False:
-            if tocando_musicas_diretorio is False:
+            if tocando_musicas_lista is True:
                 if voltar_musica == 1:
                     numero_atual_tocando = numero_atual_tocando - 2
                     voltar_musica = 0
                 if mixer.music.get_busy() == 0:
+                    if numero_atual_tocando >= in18 and numero_atual_tocando << 0:
+                        numero_atual_tocando = numero_atual_tocando - numero_atual_tocando
+                    
                     if numero_atual_tocando != in18:
                         try:
                             try:
@@ -63,26 +115,24 @@ def is13():
                         except error:
                             numero_atual_tocando = numero_atual_tocando + 1
                             continue
-            else:
+            
+            if tocando_musicas_diretorio is True:
                 if voltar_musica == 1:
                     numero_atual_tocando = numero_atual_tocando - 2
                     voltar_musica = 0
                 if mixer.music.get_busy() == 0:
                     try:
                         musica_tocar = arquivos_velho + procura_arquivos[numero_atual_tocando]
-                    
+
                     except IndexError:
-                        print('')
-                        print('Não existem arquivos de música nesse diretório')
-                        print('')
                         break
+                    contador = 0
                     mixer.music.load(musica_tocar)
                     mixer.music.play()
                     numero_atual_tocando = numero_atual_tocando + 1
-                else:
-                    neutro = 0
-        sleep(0.5)
-
+        
+        contador = contador + 1
+        sleep(0.9)
 
 try:
     st03 = open('configs.txt', 'r')
@@ -90,75 +140,72 @@ try:
     mostrar_cores = (int(st03.readline()))
     st03.close()
 except FileNotFoundError:
-    print('Arquivo deletado, criando um novo...')
-    print('')
-    st03 = open('configs.txt', 'w')
-    st03.write('0.2\n')
-    st03.write('0')
+    arquivo_errado('Erro, arquivo desaparecido')
     st03 = open('configs.txt', 'r')
     in04 = float(st03.readline())
     mostrar_cores = int(st03.readline())
     st03.close()
-
 except ValueError:
-    print('Arquivos com valores errados, revertendo...')
-    print('')
-    st03 = open('configs.txt', 'w')
-    st03.write('0.2\n')
-    st03.write('0')
+    arquivo_errado('Erro, arquivo modificado incorretamente')
     st03 = open('configs.txt', 'r')
     in04 = float(st03.readline())
     mostrar_cores = int(st03.readline())
     st03.close()
-
 mixer.music.set_volume(in04)
 vo10 = in04
 
-while se01 is True:
-    var = False
-    co02 = True
-    if te11 is True:
-        print('')
+print('Bem vindo ao reprodutor')
+print('')
 
-    mu05 = str(input('Nome da música para reproduzir: ')).strip().lower()
+threading.Thread(target=Teclado_atalhos).start()
 
-    if mu05 == 'sair':
-        se01, co02 = False, False
-    else:
-        if mu05 == '':
-            pular_inicio = True
-            from os import system, name
-            system('cls' if name == 'nt' else 'clear')
-            del system, name
-        else:
-            mp06 = '.mp3' in mu05
-            if mp06 is False:
-                mu05 = mu05 + '.mp3'
-
-        if pular_inicio is False:
-            try:
-                mixer.music.load(mu05)
-            except error:
-                print('')
-                print('A música {} não existe, tente outro arquivo'.format(mu05))
-                te11 = True
-                continue
-
-            sleep(0.5)
-            mixer.music.play()
-
-    while co02 is True:
+#Tudo começa depois daqui!
+while co02 is True:
         co07 = str(input('Comando para a música: ')).strip().lower()
         te11 = True
 
-        print('')
+        certeza = 'tocar' in co07
+        if certeza is True:
+            sera_tocado = co07.replace('tocar', '').strip()
+            if mixer.get_busy() == 1:
+                certeza = 's'
+                certeza = str(input('Para tocar {} voce precisa parar o que esta sendo tocado (S/N)'.format(sera_tocado))).lower().strip()
+            
+            else:    
+                if certeza == 's' or 'sim':
+                    tocando_musicas_lista = False
+                    tocando_musicas_diretorio = False
+                    mixer.music.unload()
+                    mixer.music.unpause()
+                    li15 = 0
+                    li16 = []
+                    tem_mp3 = '.mp3' in sera_tocado
+                    if tem_mp3 is False:
+                        sera_tocado = sera_tocado + '.mp3'
+                    li16.append(sera_tocado)
 
         if co07 == 'proxima':
-            mixer.music.unload()
-            te19 = False
+            proxima()
         
+        if co07 == 'tempo':
+            try:
+                print('A musica esta a {}'.format(contador))
+            except NameError:
+                continue
+            print('')
+        
+        if co07 == 'easter egg':
+            print('')
+            print('Voce achou um easter egg, parabens')
+            print('Nao tem nada de mais mas eu gosto de fazer algumas coisas aleatorias!')
+            print('Desfretue do meu programa a vontade e faca o que voce quisar...')
+            print('')
+
         if co07 == 'pasta':
-            tocando_musicas_diretorio = True
+            tocando_musicas_diretorio = False
+            tocando_musicas_lista = False
+            import glob
+            mixer.music.fadeout(200)
             localizacao_arquivos = str(input('Cole a localização dos seus arquivos de música: ')).strip() + '\*.mp3'
             procura_arquivos = glob.glob(localizacao_arquivos)
             arquivos_velho = localizacao_arquivos.replace('*.mp3', '').strip()
@@ -169,12 +216,17 @@ while se01 is True:
                 except IndexError:
                     continue
 
+            tocando_musicas_lista = False
             tocando_musicas_diretorio = True
+            del glob
             thread()
 
-        if co07 == 'alistar':
+        if co07 == 'lista':
+            quantidade_de_musicas = 0
             tocando_musicas_diretorio = False
-            in18 = 0
+            tocando_musicas_lista = False
+            mixer.music.fadeout(200)
+            in18 = -1
             li16 = []
             en26 = False
             li15 = 0
@@ -190,6 +242,7 @@ while se01 is True:
 
                     li15 = li15 + 1
                     in18 = in18 + 1
+                    quantidade_de_musicas = quantidade_de_musicas + 1
                 else:
                     li16.append(str('#'))
 
@@ -202,7 +255,8 @@ while se01 is True:
                         li16.remove('#')
                     except ValueError:
                         continue
-
+            
+            tocando_musicas_lista = True
             print('')
             thread()
 
@@ -213,36 +267,53 @@ while se01 is True:
             if mp06 is False:
                 co07 = co07 + '.mp3'
 
-            try:
-                mixer.music.queue(co07)
-                print('Música {} alistada com sucesso'.format(co07))
-            except error:
-                print('Música {} não existe'.format(co07))
-                print('')
-                continue
+            valor_musicas_nao_tocadas = None
+            valor_musicas_nao_tocadas = in18
+            valor_musicas_ja_tocadas = 0
+            lista_ja_tocado = []
+            tirar_antigo = 0
+            lista_temporaria = []
+            lista_temporaria = li16
+            
+
+            for tirar_antigo in range(0, numero_atual_tocando):
+                lista_ja_tocado.append(lista_temporaria[tirar_antigo])
+
+            for tirar_antigo_outro in range(numero_atual_tocando):
+                lista_temporaria.remove(lista_temporaria[0])
+                valor_musicas_ja_tocadas = valor_musicas_ja_tocadas + 1
+
+            li16 = []
+
+            for recriador_lista in range(0, valor_musicas_ja_tocadas):
+                li16.append(lista_ja_tocado[recriador_lista])
+
+            valor_musicas_nao_tocadas = valor_musicas_nao_tocadas - valor_musicas_ja_tocadas
+
+            li16.append(co07)
+            in18 = in18 + 1
+
+            for recriado_lista_outro in range(0, valor_musicas_nao_tocadas):
+                li16.append(lista_temporaria[recriado_lista_outro])
+
             print('')
 
         if co07 == 'voltar':
-            voltar_musica = 1
-            mixer.music.unload()
+            voltar()
 
         if co07 == 'sobre':
-            if mostrar_cores == 1:
-                print('\033[1;35m')
+            ativador_cores('\033[1;35m', 0)
             print('Foi o Zeki quem fez! Versão 0.1.6')
             print('Alguns bugs estão a solta pelo programa, eu vou corrigir eles...')
             print('Espero que você goste do que eu fiz >w<')
-            if mostrar_cores == 1:
-                print('\033[m')
-                print('')
-            else:
-                print('')
+            ativador_cores('\033[m', 1)
 
         vo08 = + float(in04)
         vo09 = 'volume' in co07
         if vo09 is True:
             vo08 = co07.split()
             if vo08[1] == 'info':
+                print('')
                 print('O volume da música é {:.0f}'.format(mixer.music.get_volume() * 100))
                 print('')
             else:
@@ -259,6 +330,12 @@ while se01 is True:
             mixer.music.pause()
             te19 = True
 
+        if co07 == 'nome':
+            if tocando_musicas_diretorio is True:
+                print('O nome da musica sendo reproduzida e {}'.format(procura_arquivos[numero_atual]))
+            else:
+                print('O nome da musica sendo reproduzida e {}'.format(li16[li15]))
+
         if co07 == 'retomar':
             mixer.music.unpause()
             te19 = False
@@ -268,9 +345,9 @@ while se01 is True:
                 mostrar_cores = 1
             else:
                 mostrar_cores = 0
-            
+
             st03 = open('configs.txt', 'w')
-            
+
             editor_arquivo()
 
         if co07 == 'trocar':
@@ -300,12 +377,13 @@ Volume info = Mostra o volume do programa
 Comandos = Mostra os possíveis comandos dentro do programa
 ''')
 
+
 def sair_diminuir(texto):
-    if mostrar_cores == 1:
-        print('\033[1;31m')
+    ativador_cores('\033[1;31m', 0)
     sleep(0.5)
     system('cls' if name == 'nt' else 'clear')
     print(texto)
+
 
 from os import system, name
 
@@ -314,8 +392,5 @@ for teste in range(1, 4):
     mixer.music.fadeout(200)
     sair_diminuir('Saindo do programa' + '.' * teste)
 
-if mostrar_cores == 1:
-    print('\033[m')
-else: print('')
-
+ativador_cores('\033[m', 1)
 sleep(0.5)
