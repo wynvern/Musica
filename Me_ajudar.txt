@@ -1,7 +1,0 @@
-Portugues = 0 Trabalhos
-Matematica = 0 Trabalhos
-Ciencias = 0 Trabalhos
-Historia = 0 Trabalhos
-Ingles = 0 Trabalhos
-Artes = 0 Trabalhos
-Religiao = 0
