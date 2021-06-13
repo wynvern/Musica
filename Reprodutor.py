@@ -19,34 +19,34 @@ def ativador_cores(cor, momento):
     else: print(cor)
         
 
-def tem_mp3(musica_teste):
-    mp3_verdadeiro = '.mp3' in musica_teste
-    if mp3_verdadeiro is False: musica_teste = musica_teste + '.mp3'
-        
-
-
 def Teclado_atalhos():
     sleep_ja = 0
     while True:    
         if var is True: break
         if tocando_musicas_diretorio or tocando_musicas_lista is True:
-            if keyboard.is_pressed('}'):
-                proxima()  
-                sleep(2)
-            else:
-                sleep_ja = sleep_ja + 1
+            try:
+                if keyboard.is_pressed('ctrl+>'):
+                    proxima()  
+                    sleep(2)
+                else:
+                    sleep_ja = sleep_ja + 1
+                    sleep(0.1)
+            except:
                 sleep(0.1)
 
-            if keyboard.is_pressed('{'):
-                voltar()
-                sleep(2)
-            else:
-                if sleep_ja == 1:
-                    sleep_ja = 0
+            try:
+                if keyboard.is_pressed('ctrl+<'):
+                    voltar()
+                    sleep(2)
                 else:
-                    sleep(0.1)
+                    if sleep_ja == 1:
+                        sleep_ja = 0
+                    else:
+                        sleep(0.1)
+            except:
+                sleep(0.1)
         else:
-            sleep(3)
+            sleep(0.1)
 
 def voltar():
     global voltar_musica
