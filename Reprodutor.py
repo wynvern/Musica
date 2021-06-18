@@ -10,7 +10,7 @@ mixer.init()
 
 global voltar_musica
 global var
-co02, te19, li16, pular_inicio, voltar_musica, var, tocando_musicas_diretorio, tocando_musicas_lista, thread_iniciado = True, False, [], False, 0, False, False, False, False
+co02, te19, li16, voltar_musica, var, tocando_musicas_diretorio, tocando_musicas_lista, thread_iniciado = True, False, [], 0, False, False, False, False
 
 def ativador_cores(cor, momento):
     if momento == 0:
@@ -30,12 +30,12 @@ def comandos_teclado(tecla, comando):
 
 
 def Teclado_atalhos():
-    sleep_ja = 0
     while True:    
         if var is True: break
         if tocando_musicas_diretorio or tocando_musicas_lista is True:
             comandos_teclado('ctrl+', proxima)
             comandos_teclado('ctrl+[', voltar)
+
 
 def voltar():
     global voltar_musica
@@ -65,27 +65,6 @@ def arquivo_errado(mensagem):
     arquivo_configs.write('0')
     arquivo_configs.close()
 
-
-def thread(x):
-    global thread_iniciado
-    global var
-    
-    if x == 'lista':
-        if thread_iniciado is True:
-            var = True
-            sleep(0.1)
-            var = False
-            threading.Thread(target=is13).start()
-        else: threading.Thread(target=is13).start()
-    
-    if x == 'diretorio':
-        if thread_iniciado is True:
-            var = True
-            sleep(0.1)
-            var = False
-            threading.Thread(target=is13).start()
-        else: threading.Thread(target=is13).start()
-    
 
 def is13():
     global thread_iniciado
@@ -230,9 +209,15 @@ while co02 is True:
         tocando_musicas_lista = False
         tocando_musicas_diretorio = True
         del glob
-        thread('diretorio')
+        if thread_iniciado is True:
+            var = True
+            sleep(0.1)
+            var = False
+            threading.Thread(target=is13).start()
+        else: threading.Thread(target=is13).start()
 
     if co07 == 'lista':
+        contador = 0
         quantidade_de_musicas = 0
         tocando_musicas_diretorio = False
         tocando_musicas_lista = False
@@ -247,6 +232,7 @@ while co02 is True:
                 if li16[li15] == '#':
                     en26 = True
                 else:
+                    contador = contador + 1
                     mp06 = '.mp3' in li16[li15]
                     if mp06 is False:
                         li16[li15] = li16[li15] + '.mp3'
@@ -254,25 +240,25 @@ while co02 is True:
                 li15 = li15 + 1
                 in18 = in18 + 1
                 quantidade_de_musicas = quantidade_de_musicas + 1
-            else:
-                li16.append(str('#'))
-
-            if li16[musicas] == '#':
-                en26 = True
-
+            else: li16.append(str('#'))
+               
+            if li16[musicas] == '#': en26 = True
+               
         if en26 is True:
-            for remocao in range(0, 99):
-                try:
-                    li16.remove('#')
-                except ValueError:
-                    continue
-        
+            for remocao in range(99 - contador): li16.remove('#')
+                    
         print('')
         tocando_musicas_lista = True
-        thread('lista')
+        if thread_iniciado is True:
+            var = True
+            sleep(0.1)
+            var = False
+            threading.Thread(target=is13).start()
+        else: threading.Thread(target=is13).start()
 
     qe12 = 'queue' in co07
     if qe12 is True:
+        print('')
         co07 = co07.replace('queue', '').strip()
         mp06 = 'mp3' in co07
         if mp06 is False:
@@ -287,8 +273,7 @@ while co02 is True:
         lista_temporaria = li16
         
 
-        for tirar_antigo in range(0, numero_atual_tocando):
-            lista_ja_tocado.append(lista_temporaria[tirar_antigo])
+        for tirar_antigo in range(0, numero_atual_tocando): lista_ja_tocado.append(lista_temporaria[tirar_antigo])
 
         for tirar_antigo_outro in range(numero_atual_tocando):
             lista_temporaria.remove(lista_temporaria[0])
@@ -296,9 +281,8 @@ while co02 is True:
 
         li16 = []
 
-        for recriador_lista in range(0, valor_musicas_ja_tocadas):
-            li16.append(lista_ja_tocado[recriador_lista])
-
+        for recriador_lista in range(0, valor_musicas_ja_tocadas): li16.append(lista_ja_tocado[recriador_lista])
+        
         valor_musicas_nao_tocadas = valor_musicas_nao_tocadas - valor_musicas_ja_tocadas
 
         li16.append(co07)
@@ -307,10 +291,8 @@ while co02 is True:
         for recriado_lista_outro in range(0, valor_musicas_nao_tocadas):
             li16.append(lista_temporaria[recriado_lista_outro])
 
-        print('')
-
-    if co07 == 'voltar':
-        voltar()
+        
+    if co07 == 'voltar': voltar()
 
     if co07 == 'sobre':
         ativador_cores('\033[1;35m', 0)
@@ -341,33 +323,21 @@ while co02 is True:
         mixer.music.pause()
         te19 = True
 
-    if co07 == 'nome':
-        if tocando_musicas_diretorio is True:
-            print('O nome da musica sendo reproduzida e {}'.format(procura_arquivos[numero_atual]))
-        else:
-            print('O nome da musica sendo reproduzida e {}'.format(li16[li15]))
-
+    if co07 == 'musica':
+        if tocando_musicas_diretorio is True: print('O nome da musica sendo reproduzida e {}'.format(procura_arquivos[numero_atual]))
+        else: print('O nome da musica sendo reproduzida e {}'.format(li16[li15]))
+            
     if co07 == 'retomar':
         mixer.music.unpause()
         te19 = False
 
     if co07 == 'cores':
-        if mostrar_cores == 0:
-            mostrar_cores = 1
-        else:
-            mostrar_cores = 0
-
+        if mostrar_cores == 0: mostrar_cores = 1
+        else: mostrar_cores = 0
         st03 = open('configs.txt', 'w')
-
         editor_arquivo()
 
-    if co07 == 'trocar':
-        mixer.music.unload()
-        co02, var, li15, pular_inicio = False, True, 0, False
-        li16.clear()
-
-    if co07 == 'sair':
-        co02, var = False, True
+    if co07 == 'sair': co02, var = False, True
 
     if co07 == 'recomecar':
         mixer.music.rewind()
