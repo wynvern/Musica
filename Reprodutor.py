@@ -18,35 +18,24 @@ def ativador_cores(cor, momento):
         else: print('')
     else: print(cor)
         
+def comandos_teclado(tecla, comando):
+    try:
+        if keyboard.is_pressed(tecla):
+                comando()
+                sleep(2)
+        else:
+            sleep(0.1)
+    except:
+        sleep(0.1)
+
 
 def Teclado_atalhos():
     sleep_ja = 0
     while True:    
         if var is True: break
         if tocando_musicas_diretorio or tocando_musicas_lista is True:
-            try:
-                if keyboard.is_pressed('ctrl+>'):
-                    proxima()  
-                    sleep(2)
-                else:
-                    sleep_ja = sleep_ja + 1
-                    sleep(0.1)
-            except:
-                sleep(0.1)
-
-            try:
-                if keyboard.is_pressed('ctrl+<'):
-                    voltar()
-                    sleep(2)
-                else:
-                    if sleep_ja == 1:
-                        sleep_ja = 0
-                    else:
-                        sleep(0.1)
-            except:
-                sleep(0.1)
-        else:
-            sleep(0.1)
+            comandos_teclado('ctrl+', proxima)
+            comandos_teclado('ctrl+[', voltar)
 
 def voltar():
     global voltar_musica
